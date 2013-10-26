@@ -7,6 +7,7 @@
 //
 
 #import "QueueViewController.h"
+#import "UserViewController.h"
 
 #include <Firebase/Firebase.h>
 
@@ -20,6 +21,7 @@
 @property (nonatomic, readonly, strong) NSMutableArray *keys;
 
 - (void)configureNavigationController;
+- (void)observeFirebase;
 
 @end
 
@@ -50,16 +52,6 @@
     }
     
     return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
 }
 
 #pragma mark - Table view data source
@@ -94,6 +86,21 @@
     cell.textLabel.text = [user objectForKey:@"userId"];
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *key = [self.keys objectAtIndex:indexPath.row];
+    NSDictionary *user = [self.users objectForKey:key];
+    
+    NSString *userId = [user objectForKey:@"userId"];
+    
+    NSLog(@"key: %@", key);
+    NSLog(@"userId: %@", userId);
+
+    UserViewController *viewController = [[UserViewController alloc] initWithQueueId:self.queueId userId:userId];
+    
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Private implementation
