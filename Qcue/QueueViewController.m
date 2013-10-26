@@ -35,8 +35,8 @@
         _queueId = queueId;
         _queueName = queueName;
         
-        NSString *baseUrl = @"https://qcue-live.firebaseio.com/queues/";
-        NSString *url = [baseUrl stringByAppendingString:self.queueId];
+        NSString *urlFormat = @"https://qcue-live.firebaseio.com/queues/%@/users";
+        NSString *url = [NSString stringWithFormat:urlFormat, self.queueId];
         
         NSLog(@"url: %@", url);
         
@@ -71,7 +71,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return self.users.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -91,7 +91,7 @@
     NSLog(@"key: %@", key);
     NSLog(@"user: %@", user);
     
-    cell.textLabel.text = [user objectForKey:@"fullName"];
+    cell.textLabel.text = [user objectForKey:@"userId"];
     
     return cell;
 }
