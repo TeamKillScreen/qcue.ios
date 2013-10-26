@@ -19,6 +19,7 @@
 		E80E9C31181BFCCD0011F367 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E80E9C19181BFCCC0011F367 /* UIKit.framework */; };
 		E80E9C39181BFCCD0011F367 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E80E9C37181BFCCD0011F367 /* InfoPlist.strings */; };
 		E80E9C3B181BFCCD0011F367 /* QcueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E80E9C3A181BFCCD0011F367 /* QcueTests.m */; };
+		E8FF3F3D181C647500C5136B /* QueuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8FF3F3C181C647500C5136B /* QueuesViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,8 @@
 		E80E9C36181BFCCD0011F367 /* QcueTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QcueTests-Info.plist"; sourceTree = "<group>"; };
 		E80E9C38181BFCCD0011F367 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E80E9C3A181BFCCD0011F367 /* QcueTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QcueTests.m; sourceTree = "<group>"; };
+		E8FF3F3B181C647500C5136B /* QueuesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueuesViewController.h; sourceTree = "<group>"; };
+		E8FF3F3C181C647500C5136B /* QueuesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueuesViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +112,8 @@
 			children = (
 				E80E9C24181BFCCD0011F367 /* AppDelegate.h */,
 				E80E9C25181BFCCD0011F367 /* AppDelegate.m */,
+				E8FF3F3B181C647500C5136B /* QueuesViewController.h */,
+				E8FF3F3C181C647500C5136B /* QueuesViewController.m */,
 				E80E9C27181BFCCD0011F367 /* Images.xcassets */,
 				E80E9C1C181BFCCD0011F367 /* Supporting Files */,
 			);
@@ -239,6 +244,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8FF3F3D181C647500C5136B /* QueuesViewController.m in Sources */,
 				E80E9C26181BFCCD0011F367 /* AppDelegate.m in Sources */,
 				E80E9C22181BFCCD0011F367 /* main.m in Sources */,
 			);
@@ -441,6 +447,7 @@
 				E80E9C40181BFCCD0011F367 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E80E9C41181BFCCD0011F367 /* Build configuration list for PBXNativeTarget "QcueTests" */ = {
 			isa = XCConfigurationList;
@@ -449,6 +456,7 @@
 				E80E9C43181BFCCD0011F367 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
