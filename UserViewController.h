@@ -10,6 +10,6 @@
 
 @interface UserViewController : UIViewController
 
-- (instancetype)initWithQueueId:(NSString *)queueId userId:(NSString *)userId;
+- (instancetype)initWithQueueId:(NSString *)queueId userId:(NSString *)userId userName:(NSString *)userName;
 
 @end

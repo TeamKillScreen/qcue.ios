@@ -19,12 +19,15 @@
 @property (nonatomic, readonly, strong) Firebase *queueFirebase;
 @property (nonatomic, readonly, strong) Firebase *usersFirebase;
 
+@property (nonatomic, readonly, strong) NSMutableDictionary *queueUsers;
+@property (nonatomic, readonly, strong) NSMutableArray *queueUserKeys;
+
 @property (nonatomic, readonly, strong) NSMutableDictionary *users;
-@property (nonatomic, readonly, strong) NSMutableArray *keys;
+@property (nonatomic, readonly, strong) NSMutableArray *userKeys;
 
 - (void)configureNavigationController;
 - (void)refreshTableView;
-- (void)observeFirebase;
+- (void)observeQueueFirebase;
 
 @end
 
@@ -46,16 +49,19 @@
         NSString *usersUrlFormat = @"https://qcue-live.firebaseio.com/users";
         NSString *usersUrl = [NSString stringWithFormat:usersUrlFormat, self.queueId];
         
-        NSLog(@"usersUrl: %@", usersUrl);
+        // NSLog(@"usersUrl: %@", usersUrl);
         
         _queueFirebase = [[Firebase alloc] initWithUrl:queueUrl];
+        _queueUsers = [[NSMutableDictionary alloc] init];
+        _queueUserKeys = [[NSMutableArray alloc] init];
+
         _usersFirebase = [[Firebase alloc] initWithUrl:usersUrl];
-        
         _users = [[NSMutableDictionary alloc] init];
-        _keys = [[NSMutableArray alloc] init];
-        
+        _userKeys = [[NSMutableArray alloc] init];
+
         [self configureNavigationController];
-        [self observeFirebase];
+        [self observeUsersFirebase];
+        [self observeQueueFirebase];
     }
     
     return self;
@@ -70,7 +76,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.users.count;
+    return self.queueUsers.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -84,28 +90,48 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     
-    NSString *key = [self.keys objectAtIndex:indexPath.row];
-    NSDictionary *user = [self.users objectForKey:key];
+    NSString *queueUserKey = [self.queueUserKeys objectAtIndex:indexPath.row];
+    NSDictionary *queueUser = [self.queueUsers objectForKey:queueUserKey];
+    NSString *userId = [queueUser objectForKey:@"userId"];
+    
+    NSDictionary *user = [self.users objectForKey:userId];
+    
+    NSString *text;
+    
+    if (user) {
+        text = [user objectForKey:@"fullName"];
+    } else {
+        text = @"???";
+    }
     
     // NSLog(@"key: %@", key);
     // NSLog(@"user: %@", user);
     
-    cell.textLabel.text = [user objectForKey:@"userId"];
+    cell.textLabel.text = text;
     
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *key = [self.keys objectAtIndex:indexPath.row];
-    NSDictionary *user = [self.users objectForKey:key];
+    NSString *key = [self.queueUserKeys objectAtIndex:indexPath.row];
+    NSDictionary *queueUser = [self.queueUsers objectForKey:key];
+    NSString *userId = [queueUser objectForKey:@"userId"];
     
-    NSString *userId = [user objectForKey:@"userId"];
+    NSDictionary *user = [self.users objectForKey:userId];
+    
+    NSString *userName;
+    
+    if (user) {
+        userName = [user objectForKey:@"fullName"];
+    } else {
+        userName = @"???";
+    }
     
     // NSLog(@"key: %@", key);
     // NSLog(@"userId: %@", userId);
 
-    UserViewController *viewController = [[UserViewController alloc] initWithQueueId:self.queueId userId:userId];
+    UserViewController *viewController = [[UserViewController alloc] initWithQueueId:self.queueId userId:userId userName:userName];
     
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -118,14 +144,14 @@
     self.navigationItem.title = self.queueName;
 }
 
-- (void)observeFirebase
+- (void)observeQueueFirebase
 {
     [self.queueFirebase observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
         // NSLog(@"Name: %@", snapshot.name);
         // NSLog(@"Value: %@", snapshot.value);
         
-        [self.users setObject:snapshot.value forKey:snapshot.name];
-        [self.keys addObject:snapshot.name];
+        [self.queueUsers setObject:snapshot.value forKey:snapshot.name];
+        [self.queueUserKeys addObject:snapshot.name];
 
         [self refreshTableView];
     }];
@@ -134,8 +160,41 @@
         // NSLog(@"Name: %@", snapshot.name);
         // NSLog(@"Value: %@", snapshot.value);
         
+        [self.queueUsers removeObjectForKey:snapshot.name];
+        [self.queueUserKeys removeObject:snapshot.name];
+        
+        [self refreshTableView];
+    }];
+}
+
+- (void)observeUsersFirebase
+{
+    [self.usersFirebase observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
+        NSLog(@"Name: %@", snapshot.name);
+        NSLog(@"Value: %@", snapshot.value);
+        
+        [self.users setObject:snapshot.value forKey:snapshot.name];
+        [self.userKeys addObject:snapshot.name];
+        
+        [self refreshTableView];
+    }];
+
+    [self.usersFirebase observeEventType:FEventTypeChildChanged withBlock:^(FDataSnapshot *snapshot) {
+        NSLog(@"Name: %@", snapshot.name);
+        NSLog(@"Value: %@", snapshot.value);
+        
+        [self.users setObject:snapshot.value forKey:snapshot.name];
+        [self.userKeys addObject:snapshot.name];
+        
+        [self refreshTableView];
+    }];
+
+    [self.usersFirebase observeEventType:FEventTypeChildRemoved withBlock:^(FDataSnapshot *snapshot) {
+        NSLog(@"Name: %@", snapshot.name);
+        NSLog(@"Value: %@", snapshot.value);
+        
         [self.users removeObjectForKey:snapshot.name];
-        [self.keys removeObject:snapshot.name];
+        [self.userKeys removeObject:snapshot.name];
         
         [self refreshTableView];
     }];

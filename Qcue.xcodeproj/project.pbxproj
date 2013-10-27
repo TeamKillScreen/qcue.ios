@@ -19,6 +19,13 @@
 		E80E9C31181BFCCD0011F367 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E80E9C19181BFCCC0011F367 /* UIKit.framework */; };
 		E80E9C39181BFCCD0011F367 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E80E9C37181BFCCD0011F367 /* InfoPlist.strings */; };
 		E80E9C3B181BFCCD0011F367 /* QcueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E80E9C3A181BFCCD0011F367 /* QcueTests.m */; };
+		E8647C86181CFFDE0086C0EF /* PebbleKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8647C85181CFFDE0086C0EF /* PebbleKit.framework */; };
+		E8647C88181CFFEA0086C0EF /* PebbleVendor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8647C87181CFFEA0086C0EF /* PebbleVendor.framework */; };
+		E8647C8A181D002E0086C0EF /* ExternalAccessory.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8647C89181D002E0086C0EF /* ExternalAccessory.framework */; };
+		E8647C8C181D003C0086C0EF /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8647C8B181D003C0086C0EF /* libz.dylib */; };
+		E8647C8E181D018F0086C0EF /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8647C8D181D018F0086C0EF /* CoreBluetooth.framework */; };
+		E8647C90181D01960086C0EF /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8647C8F181D01960086C0EF /* CoreMotion.framework */; };
+		E8647C92181D01A00086C0EF /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8647C91181D01A00086C0EF /* MessageUI.framework */; };
 		E8FF3F3D181C647500C5136B /* QueuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8FF3F3C181C647500C5136B /* QueuesViewController.m */; };
 		E8FF3F3F181C67BA00C5136B /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E8FF3F3E181C67BA00C5136B /* Firebase.framework */; };
 		E8FF3F41181C67E100C5136B /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E8FF3F40181C67E100C5136B /* libicucore.dylib */; };
@@ -56,6 +63,13 @@
 		E80E9C36181BFCCD0011F367 /* QcueTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QcueTests-Info.plist"; sourceTree = "<group>"; };
 		E80E9C38181BFCCD0011F367 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E80E9C3A181BFCCD0011F367 /* QcueTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QcueTests.m; sourceTree = "<group>"; };
+		E8647C85181CFFDE0086C0EF /* PebbleKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PebbleKit.framework; sourceTree = "<group>"; };
+		E8647C87181CFFEA0086C0EF /* PebbleVendor.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PebbleVendor.framework; sourceTree = "<group>"; };
+		E8647C89181D002E0086C0EF /* ExternalAccessory.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ExternalAccessory.framework; path = System/Library/Frameworks/ExternalAccessory.framework; sourceTree = SDKROOT; };
+		E8647C8B181D003C0086C0EF /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		E8647C8D181D018F0086C0EF /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		E8647C8F181D01960086C0EF /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
+		E8647C91181D01A00086C0EF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		E8FF3F3B181C647500C5136B /* QueuesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueuesViewController.h; sourceTree = "<group>"; };
 		E8FF3F3C181C647500C5136B /* QueuesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QueuesViewController.m; sourceTree = "<group>"; };
 		E8FF3F3E181C67BA00C5136B /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
@@ -74,12 +88,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8647C92181D01A00086C0EF /* MessageUI.framework in Frameworks */,
+				E8647C90181D01960086C0EF /* CoreMotion.framework in Frameworks */,
+				E8647C8E181D018F0086C0EF /* CoreBluetooth.framework in Frameworks */,
+				E8647C8C181D003C0086C0EF /* libz.dylib in Frameworks */,
+				E8647C8A181D002E0086C0EF /* ExternalAccessory.framework in Frameworks */,
 				E8FF3F47181C67FC00C5136B /* SystemConfiguration.framework in Frameworks */,
 				E8FF3F45181C67EF00C5136B /* Security.framework in Frameworks */,
 				E8FF3F43181C67E800C5136B /* CFNetwork.framework in Frameworks */,
 				E8FF3F41181C67E100C5136B /* libicucore.dylib in Frameworks */,
 				E80E9C18181BFCCC0011F367 /* CoreGraphics.framework in Frameworks */,
 				E80E9C1A181BFCCC0011F367 /* UIKit.framework in Frameworks */,
+				E8647C88181CFFEA0086C0EF /* PebbleVendor.framework in Frameworks */,
+				E8647C86181CFFDE0086C0EF /* PebbleKit.framework in Frameworks */,
 				E80E9C16181BFCCC0011F367 /* Foundation.framework in Frameworks */,
 				E8FF3F3F181C67BA00C5136B /* Firebase.framework in Frameworks */,
 			);
@@ -120,6 +141,13 @@
 		E80E9C14181BFCCC0011F367 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E8647C91181D01A00086C0EF /* MessageUI.framework */,
+				E8647C8F181D01960086C0EF /* CoreMotion.framework */,
+				E8647C8D181D018F0086C0EF /* CoreBluetooth.framework */,
+				E8647C8B181D003C0086C0EF /* libz.dylib */,
+				E8647C89181D002E0086C0EF /* ExternalAccessory.framework */,
+				E8647C87181CFFEA0086C0EF /* PebbleVendor.framework */,
+				E8647C85181CFFDE0086C0EF /* PebbleKit.framework */,
 				E8FF3F46181C67FC00C5136B /* SystemConfiguration.framework */,
 				E8FF3F44181C67EF00C5136B /* Security.framework */,
 				E8FF3F42181C67E800C5136B /* CFNetwork.framework */,
@@ -395,6 +423,7 @@
 		E80E9C3F181BFCCD0011F367 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -406,6 +435,7 @@
 				INFOPLIST_FILE = "Qcue/Qcue-Info.plist";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -413,6 +443,7 @@
 		E80E9C40181BFCCD0011F367 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -424,6 +455,7 @@
 				INFOPLIST_FILE = "Qcue/Qcue-Info.plist";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALID_ARCHS = "armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

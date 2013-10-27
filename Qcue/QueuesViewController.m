@@ -69,8 +69,8 @@
     NSString *key = [self.keys objectAtIndex:indexPath.row];
     NSDictionary *queue = [self.queues objectForKey:key];
     
-    NSLog(@"key: %@", key);
-    NSLog(@"queue: %@", queue);
+    // NSLog(@"key: %@", key);
+    // NSLog(@"queue: %@", queue);
     
     cell.textLabel.text = [queue objectForKey:@"name"];
     
@@ -84,8 +84,8 @@
     
     NSString *queueName = [queue objectForKey:@"name"];
     
-    NSLog(@"key: %@", key);
-    NSLog(@"queueName: %@", queueName);
+    // NSLog(@"key: %@", key);
+    // NSLog(@"queueName: %@", queueName);
 
     QueueViewController *viewController = [[QueueViewController alloc] initWithQueueId:key named:queueName];
     
@@ -97,8 +97,8 @@
 - (void)observeFirebase
 {
     [self.firebase observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"Name: %@", snapshot.name);
-        NSLog(@"Value: %@", snapshot.value);
+        // NSLog(@"Name: %@", snapshot.name);
+        // NSLog(@"Value: %@", snapshot.value);
         
         [self.queues setObject:snapshot.value forKey:snapshot.name];
         [self.keys addObject:snapshot.name];
@@ -107,8 +107,8 @@
     }];
     
     [self.firebase observeEventType:FEventTypeChildRemoved withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"Name: %@", snapshot.name);
-        NSLog(@"Value: %@", snapshot.value);
+        // NSLog(@"Name: %@", snapshot.name);
+        // NSLog(@"Value: %@", snapshot.value);
         
         [self.queues removeObjectForKey:snapshot.name];
         [self.keys removeObject:snapshot.name];

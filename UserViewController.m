@@ -15,6 +15,7 @@
 
 @property (nonatomic, readonly, strong) NSString *queueId;
 @property (nonatomic, readonly, strong) NSString *userId;
+@property (nonatomic, readonly, strong) NSString *userName;
 
 @property (nonatomic, readonly, strong) Firebase *firebase;
 
@@ -38,18 +39,19 @@
 
 @implementation UserViewController
 
-- (instancetype)initWithQueueId:(NSString *)queueId userId:(NSString *)userId
+- (instancetype)initWithQueueId:(NSString *)queueId userId:(NSString *)userId userName:(NSString *)userName
 {
     self = [super init];
     
     if (self) {
-        _userId = userId;
         _queueId = queueId;
+        _userId = userId;
+        _userName = userName;
         
         NSString *urlFormat = @"https://qcue-live.firebaseio.com/queues/%@/users";
         NSString *url = [NSString stringWithFormat:urlFormat, self.queueId];
         
-        NSLog(@"url: %@", url);
+        // NSLog(@"url: %@", url);
         
         _firebase = [[Firebase alloc] initWithUrl:url];
         
@@ -70,7 +72,7 @@
 - (void)configureNavigationController
 {
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-    self.navigationItem.title = self.userId;
+    self.navigationItem.title = self.userName;
 }
 
 - (void)configureView
@@ -99,10 +101,10 @@
             if ([userId isEqualToString:self.userId]) {
                 NSInteger position = [self.keys indexOfObject:key] + 1;
                 
-                NSLog(@"updatePosition: %d", position);
+                // NSLog(@"updatePosition: %ld", (long)position);
                 
                 self.label.textColor = [self colorForPosition:position];
-                self.label.text = [NSString stringWithFormat:@"%d", position];
+                self.label.text = [NSString stringWithFormat:@"%ld", (long)position];
                 
                 [self vibrateForPosition:position];
                 
@@ -149,7 +151,7 @@
 {
     AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
     
-    NSLog(@"self.vibrationCount: %d", self.vibrationCount);
+    // NSLog(@"self.vibrationCount: %ld", (long)self.vibrationCount);
     
     self.vibrationCount--;
     
@@ -162,8 +164,8 @@
 - (void)observeFirebase
 {
     [self.firebase observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"Name: %@", snapshot.name);
-        NSLog(@"Value: %@", snapshot.value);
+        // NSLog(@"Name: %@", snapshot.name);
+        // NSLog(@"Value: %@", snapshot.value);
         
         [self.users setObject:snapshot.value forKey:snapshot.name];
         [self.keys addObject:snapshot.name];
@@ -174,8 +176,8 @@
     }];
     
     [self.firebase observeEventType:FEventTypeChildRemoved withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"Name: %@", snapshot.name);
-        NSLog(@"Value: %@", snapshot.value);
+        // NSLog(@"Name: %@", snapshot.name);
+        // NSLog(@"Value: %@", snapshot.value);
         
         [self.users removeObjectForKey:snapshot.name];
         [self.keys removeObject:snapshot.name];
