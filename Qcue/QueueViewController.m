@@ -80,8 +80,8 @@
     NSString *key = [self.keys objectAtIndex:indexPath.row];
     NSDictionary *user = [self.users objectForKey:key];
     
-    NSLog(@"key: %@", key);
-    NSLog(@"user: %@", user);
+    // NSLog(@"key: %@", key);
+    // NSLog(@"user: %@", user);
     
     cell.textLabel.text = [user objectForKey:@"userId"];
     
@@ -95,8 +95,8 @@
     
     NSString *userId = [user objectForKey:@"userId"];
     
-    NSLog(@"key: %@", key);
-    NSLog(@"userId: %@", userId);
+    // NSLog(@"key: %@", key);
+    // NSLog(@"userId: %@", userId);
 
     UserViewController *viewController = [[UserViewController alloc] initWithQueueId:self.queueId userId:userId];
     
@@ -114,7 +114,8 @@
 - (void)observeFirebase
 {
     [self.firebase observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"%@ -> %@", snapshot.name, snapshot.value);
+        NSLog(@"Name: %@", snapshot.name);
+        NSLog(@"Value: %@", snapshot.value);
         
         [self.users setObject:snapshot.value forKey:snapshot.name];
         [self.keys addObject:snapshot.name];

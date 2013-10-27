@@ -96,10 +96,24 @@
 - (void)observeFirebase
 {
     [self.firebase observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"%@ -> %@", snapshot.name, snapshot.value);
+        NSLog(@"Name: %@", snapshot.name);
+        NSLog(@"Value: %@", snapshot.value);
         
         [self.queues setObject:snapshot.value forKey:snapshot.name];
         [self.keys addObject:snapshot.name];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    }];
+
+    
+    [self.firebase observeEventType:FEventTypeChildRemoved withBlock:^(FDataSnapshot *snapshot) {
+        NSLog(@"Name: %@", snapshot.name);
+        NSLog(@"Value: %@", snapshot.value);
+        
+        [self.queues removeObjectForKey:snapshot.name];
+        [self.keys removeObject:snapshot.name];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];

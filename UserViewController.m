@@ -19,8 +19,12 @@
 @property (nonatomic, readonly, strong) NSMutableDictionary *users;
 @property (nonatomic, readonly, strong) NSMutableArray *keys;
 
+@property (nonatomic, strong) UILabel *label;
+
 - (void)configureNavigationController;
 - (void)observeFirebase;
+- (void)configureView;
+- (void)updatePosition;
 
 @end
 
@@ -45,6 +49,8 @@
         _keys = [[NSMutableArray alloc] init];
         
         [self configureNavigationController];
+        [self configureView];
+        
         [self observeFirebase];
     }
     
@@ -59,17 +65,63 @@
     self.navigationItem.title = self.userId;
 }
 
+- (void)configureView
+{
+    self.label = [[UILabel alloc] initWithFrame:self.view.frame];
+    UIFont *font = [UIFont boldSystemFontOfSize:96];
+    
+    self.label.font = font;
+    
+    self.label.textAlignment = NSTextAlignmentCenter;
+    self.label.textColor = [UIColor greenColor];
+    self.label.text = @"2";
+    
+    [self.view addSubview:self.label];
+}
+
+- (void)updatePosition
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        // for each user in self.users
+        //     if user["userId"] == self.userId
+        
+        for (NSString *key in self.users) {
+            NSDictionary *user = [self.users objectForKey:key];
+            NSString *userId = [user objectForKey:@"userId"];
+            
+            if ([userId isEqualToString:self.userId]) {
+                NSInteger index = [self.keys indexOfObject:key];
+                NSNumber *position = [NSNumber numberWithInteger:index + 1];
+                
+                NSLog(@"updatePosition: %@", position);
+                self.label.text = [position stringValue];
+            }
+        }
+    });
+}
+
 - (void)observeFirebase
 {
     [self.firebase observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"%@ -> %@", snapshot.name, snapshot.value);
+        NSLog(@"Name: %@", snapshot.name);
+        NSLog(@"Value: %@", snapshot.value);
         
         [self.users setObject:snapshot.value forKey:snapshot.name];
         [self.keys addObject:snapshot.name];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            // TODO: repaint.
+            [self updatePosition];
         });
+    }];
+    
+    [self.firebase observeEventType:FEventTypeChildRemoved withBlock:^(FDataSnapshot *snapshot) {
+        NSLog(@"Name: %@", snapshot.name);
+        NSLog(@"Value: %@", snapshot.value);
+        
+        [self.users removeObjectForKey:snapshot.name];
+        [self.keys removeObject:snapshot.name];
+        
+        [self updatePosition];
     }];
 }
 
