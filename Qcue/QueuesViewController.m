@@ -18,6 +18,7 @@
 @property (nonatomic, readonly, strong) NSMutableArray *keys;
 
 - (void)configureNavigationController;
+- (void)refreshTableView;
 
 @end
 
@@ -28,7 +29,7 @@
     self = [super init];
     
     if (self) {
-        _firebase = [[Firebase alloc] initWithUrl:@"https://qcue-live.firebaseio.com/queues/"];
+        _firebase = [[Firebase alloc] initWithUrl:@"https://qcue-test.firebaseio.com/queues/"];
 
         _queues = [[NSMutableDictionary alloc] init];
         _keys = [[NSMutableArray alloc] init];
@@ -102,11 +103,8 @@
         [self.queues setObject:snapshot.value forKey:snapshot.name];
         [self.keys addObject:snapshot.name];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
+        [self refreshTableView];
     }];
-
     
     [self.firebase observeEventType:FEventTypeChildRemoved withBlock:^(FDataSnapshot *snapshot) {
         NSLog(@"Name: %@", snapshot.name);
@@ -114,10 +112,8 @@
         
         [self.queues removeObjectForKey:snapshot.name];
         [self.keys removeObject:snapshot.name];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
+
+        [self refreshTableView];
     }];
 }
 
@@ -125,6 +121,13 @@
 {
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     self.navigationItem.title = @"Queues";
+}
+
+- (void)refreshTableView
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 @end

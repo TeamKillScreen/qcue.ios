@@ -38,7 +38,7 @@
         _userId = userId;
         _queueId = queueId;
         
-        NSString *urlFormat = @"https://qcue-live.firebaseio.com/queues/%@/users";
+        NSString *urlFormat = @"https://qcue-test.firebaseio.com/queues/%@/users";
         NSString *url = [NSString stringWithFormat:urlFormat, self.queueId];
         
         NSLog(@"url: %@", url);

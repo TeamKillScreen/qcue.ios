@@ -21,6 +21,7 @@
 @property (nonatomic, readonly, strong) NSMutableArray *keys;
 
 - (void)configureNavigationController;
+- (void)refreshTableView;
 - (void)observeFirebase;
 
 @end
@@ -37,7 +38,7 @@
         _queueId = queueId;
         _queueName = queueName;
         
-        NSString *urlFormat = @"https://qcue-live.firebaseio.com/queues/%@/users";
+        NSString *urlFormat = @"https://qcue-test.firebaseio.com/queues/%@/users";
         NSString *url = [NSString stringWithFormat:urlFormat, self.queueId];
         
         NSLog(@"url: %@", url);
@@ -119,11 +120,26 @@
         
         [self.users setObject:snapshot.value forKey:snapshot.name];
         [self.keys addObject:snapshot.name];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData];
-        });
+
+        [self refreshTableView];
     }];
+
+    [self.firebase observeEventType:FEventTypeChildRemoved withBlock:^(FDataSnapshot *snapshot) {
+        NSLog(@"Name: %@", snapshot.name);
+        NSLog(@"Value: %@", snapshot.value);
+        
+        [self.users removeObjectForKey:snapshot.name];
+        [self.keys removeObject:snapshot.name];
+        
+        [self refreshTableView];
+    }];
+}
+
+- (void)refreshTableView
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
 }
 
 @end
