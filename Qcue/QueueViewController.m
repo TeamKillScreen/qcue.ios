@@ -170,8 +170,8 @@
 - (void)observeUsersFirebase
 {
     [self.usersFirebase observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"Name: %@", snapshot.name);
-        NSLog(@"Value: %@", snapshot.value);
+        // NSLog(@"Name: %@", snapshot.name);
+        // NSLog(@"Value: %@", snapshot.value);
         
         [self.users setObject:snapshot.value forKey:snapshot.name];
         [self.userKeys addObject:snapshot.name];
@@ -180,8 +180,8 @@
     }];
 
     [self.usersFirebase observeEventType:FEventTypeChildChanged withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"Name: %@", snapshot.name);
-        NSLog(@"Value: %@", snapshot.value);
+        // NSLog(@"Name: %@", snapshot.name);
+        // NSLog(@"Value: %@", snapshot.value);
         
         [self.users setObject:snapshot.value forKey:snapshot.name];
         [self.userKeys addObject:snapshot.name];
@@ -190,8 +190,8 @@
     }];
 
     [self.usersFirebase observeEventType:FEventTypeChildRemoved withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"Name: %@", snapshot.name);
-        NSLog(@"Value: %@", snapshot.value);
+        // NSLog(@"Name: %@", snapshot.name);
+        // NSLog(@"Value: %@", snapshot.value);
         
         [self.users removeObjectForKey:snapshot.name];
         [self.userKeys removeObject:snapshot.name];
