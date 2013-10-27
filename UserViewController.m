@@ -109,9 +109,10 @@
             if ([userId isEqualToString:self.userId]) {
                 NSInteger position = [self.keys indexOfObject:key] + 1;
                 
-                // NSLog(@"updatePosition: %ld", (long)position);
-                
                 positionText = [NSString stringWithFormat:@"%ld", (long)position];
+                
+                NSLog(@"updatePosition: %ld", (long)position);
+                NSLog(@"positionText: %@", positionText);
                 
                 self.label.textColor = [self colorForPosition:position];
                 self.label.text = positionText;
@@ -124,7 +125,9 @@
 
         NSNumber *positionKey = @(0);
 
-        if (foundUser) {
+        NSLog(@"foundUser: %d", foundUser);
+
+        if (foundUser == YES && positionText != nil) {
             NSDictionary *update = @{ positionKey: positionText };
             
             [self.watch appMessagesPushUpdate:update onSent:^(PBWatch *watch, NSDictionary *update, NSError *error) {
@@ -149,7 +152,7 @@
                     NSLog(@"Pebble error: \"%@\".", error.description);
                     
                 } else {
-                    NSLog(@"Pebble sent: %@.", positionText);
+                    NSLog(@"Pebble sent: %@.", @"bye");
                     
                 }
             }];
@@ -166,7 +169,7 @@
         return [UIColor redColor];
         
     } else if (position == 2) {
-        return [UIColor yellowColor];
+        return [UIColor orangeColor];
         
     }
     
