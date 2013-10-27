@@ -29,7 +29,7 @@
     self = [super init];
     
     if (self) {
-        _firebase = [[Firebase alloc] initWithUrl:@"https://qcue-test.firebaseio.com/queues/"];
+        _firebase = [[Firebase alloc] initWithUrl:@"https://qcue-live.firebaseio.com/queues/"];
 
         _queues = [[NSMutableDictionary alloc] init];
         _keys = [[NSMutableArray alloc] init];

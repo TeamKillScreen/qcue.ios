@@ -7,6 +7,8 @@
 //
 
 #import "UserViewController.h"
+
+#import <AudioToolbox/AudioToolbox.h>
 #include <Firebase/Firebase.h>
 
 @interface UserViewController ()
@@ -21,10 +23,16 @@
 
 @property (nonatomic, strong) UILabel *label;
 
+@property (nonatomic) NSInteger vibrationCount;
+
 - (void)configureNavigationController;
 - (void)observeFirebase;
 - (void)configureView;
+
 - (void)updatePosition;
+- (UIColor *)colorForPosition:(NSInteger)position;
+- (void)vibrateForPosition:(NSInteger)position;
+- (void)vibrate:(NSTimer *)timer;
 
 @end
 
@@ -38,7 +46,7 @@
         _userId = userId;
         _queueId = queueId;
         
-        NSString *urlFormat = @"https://qcue-test.firebaseio.com/queues/%@/users";
+        NSString *urlFormat = @"https://qcue-live.firebaseio.com/queues/%@/users";
         NSString *url = [NSString stringWithFormat:urlFormat, self.queueId];
         
         NSLog(@"url: %@", url);
@@ -68,13 +76,13 @@
 - (void)configureView
 {
     self.label = [[UILabel alloc] initWithFrame:self.view.frame];
-    UIFont *font = [UIFont boldSystemFontOfSize:96];
+    UIFont *font = [UIFont boldSystemFontOfSize:128];
     
     self.label.font = font;
     
     self.label.textAlignment = NSTextAlignmentCenter;
-    self.label.textColor = [UIColor greenColor];
-    self.label.text = @"2";
+    self.label.textColor = [UIColor blackColor];
+    self.label.text = @"?";
     
     [self.view addSubview:self.label];
 }
@@ -82,22 +90,73 @@
 - (void)updatePosition
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        // for each user in self.users
-        //     if user["userId"] == self.userId
+        BOOL foundUser = NO;
         
         for (NSString *key in self.users) {
             NSDictionary *user = [self.users objectForKey:key];
             NSString *userId = [user objectForKey:@"userId"];
             
             if ([userId isEqualToString:self.userId]) {
-                NSInteger index = [self.keys indexOfObject:key];
-                NSNumber *position = [NSNumber numberWithInteger:index + 1];
+                NSInteger position = [self.keys indexOfObject:key] + 1;
                 
-                NSLog(@"updatePosition: %@", position);
-                self.label.text = [position stringValue];
+                NSLog(@"updatePosition: %d", position);
+                
+                self.label.textColor = [self colorForPosition:position];
+                self.label.text = [NSString stringWithFormat:@"%d", position];
+                
+                [self vibrateForPosition:position];
+                
+                foundUser = YES;
             }
         }
+        
+        if (!foundUser) {
+            self.label.textColor = [UIColor blackColor];
+            self.label.text = @"Bye!";
+        }
     });
+}
+
+- (UIColor *)colorForPosition:(NSInteger)position
+{
+    if (position > 3) {
+        return [UIColor blackColor];
+        
+    } else if (position == 3) {
+        return [UIColor redColor];
+        
+    } else if (position == 2) {
+        return [UIColor yellowColor];
+        
+    }
+    
+    return [UIColor greenColor];
+}
+
+- (void)vibrateForPosition:(NSInteger)position
+{
+    if (position > 3) {
+        return;
+    }
+    
+    NSTimeInterval interval = 1;
+    
+    self.vibrationCount = 4 - position;
+    [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(vibrate:) userInfo:nil repeats:YES];
+}
+
+- (void)vibrate:(NSTimer *)timer
+{
+    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+    
+    NSLog(@"self.vibrationCount: %d", self.vibrationCount);
+    
+    self.vibrationCount--;
+    
+    if (self.vibrationCount <= 0) {
+        [timer invalidate];
+        timer = nil;
+    }
 }
 
 - (void)observeFirebase

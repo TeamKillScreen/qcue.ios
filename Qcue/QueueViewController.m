@@ -16,7 +16,9 @@
 @property (nonatomic, readonly, strong) NSString *queueName;
 @property (nonatomic, readonly, strong) NSString *queueId;
 
-@property (nonatomic, readonly, strong) Firebase *firebase;
+@property (nonatomic, readonly, strong) Firebase *queueFirebase;
+@property (nonatomic, readonly, strong) Firebase *usersFirebase;
+
 @property (nonatomic, readonly, strong) NSMutableDictionary *users;
 @property (nonatomic, readonly, strong) NSMutableArray *keys;
 
@@ -38,12 +40,16 @@
         _queueId = queueId;
         _queueName = queueName;
         
-        NSString *urlFormat = @"https://qcue-test.firebaseio.com/queues/%@/users";
-        NSString *url = [NSString stringWithFormat:urlFormat, self.queueId];
+        NSString *queueUrlFormat = @"https://qcue-live.firebaseio.com/queues/%@/users";
+        NSString *queueUrl = [NSString stringWithFormat:queueUrlFormat, self.queueId];
+
+        NSString *usersUrlFormat = @"https://qcue-live.firebaseio.com/users";
+        NSString *usersUrl = [NSString stringWithFormat:usersUrlFormat, self.queueId];
         
-        NSLog(@"url: %@", url);
+        NSLog(@"usersUrl: %@", usersUrl);
         
-        _firebase = [[Firebase alloc] initWithUrl:url];
+        _queueFirebase = [[Firebase alloc] initWithUrl:queueUrl];
+        _usersFirebase = [[Firebase alloc] initWithUrl:usersUrl];
         
         _users = [[NSMutableDictionary alloc] init];
         _keys = [[NSMutableArray alloc] init];
@@ -114,9 +120,9 @@
 
 - (void)observeFirebase
 {
-    [self.firebase observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"Name: %@", snapshot.name);
-        NSLog(@"Value: %@", snapshot.value);
+    [self.queueFirebase observeEventType:FEventTypeChildAdded withBlock:^(FDataSnapshot *snapshot) {
+        // NSLog(@"Name: %@", snapshot.name);
+        // NSLog(@"Value: %@", snapshot.value);
         
         [self.users setObject:snapshot.value forKey:snapshot.name];
         [self.keys addObject:snapshot.name];
@@ -124,9 +130,9 @@
         [self refreshTableView];
     }];
 
-    [self.firebase observeEventType:FEventTypeChildRemoved withBlock:^(FDataSnapshot *snapshot) {
-        NSLog(@"Name: %@", snapshot.name);
-        NSLog(@"Value: %@", snapshot.value);
+    [self.queueFirebase observeEventType:FEventTypeChildRemoved withBlock:^(FDataSnapshot *snapshot) {
+        // NSLog(@"Name: %@", snapshot.name);
+        // NSLog(@"Value: %@", snapshot.value);
         
         [self.users removeObjectForKey:snapshot.name];
         [self.keys removeObject:snapshot.name];
